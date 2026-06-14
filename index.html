@@ -364,7 +364,7 @@ footer p{font-family:'Space Mono',monospace;font-size:10px;color:var(--ink3);}
       <div class="dc-name">Adversa <span>AI</span></div>
       <div class="dc-sub">Chatbots &amp; Assistants</div>
     </a>
-    <a class="div-card dc-video" href="https://psihotrot-tech.github.io/Adversa/#sectors" target="_blank" rel="noopener" style="text-decoration:none">
+    <a class="div-card dc-video" href="https://www.youtube.com/watch?v=yK9kZSXDUsI" target="_blank" rel="noopener" style="text-decoration:none">
       <div class="dc-icon"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
       <div class="dc-name">Adversa <span>Video</span></div>
       <div class="dc-sub">AI Video Production</div>
@@ -407,7 +407,7 @@ footer p{font-family:'Space Mono',monospace;font-size:10px;color:var(--ink3);}
   <div class="contact-card">
     <div class="contact-item">
       <div class="contact-label">Email</div>
-      <div class="contact-val">psihotrot@gmail.com</div>
+      <a class="contact-val" href="mailto:psihotrot@gmail.com" style="text-decoration:none;color:inherit;display:block">psihotrot@gmail.com</a>
     </div>
     <div class="contact-item">
       <div class="contact-label">Lokacija</div>
@@ -720,6 +720,26 @@ footer p{font-family:'Space Mono',monospace;font-size:10px;color:var(--ink3);}
   },{passive:false});
   window.addEventListener('mouseup',  ()=>dragging=false);
   window.addEventListener('touchend', ()=>dragging=false);
+
+  // ── vCard generator ──
+  const vcard = [
+    'BEGIN:VCARD',
+    'VERSION:3.0',
+    'FN:Sava Pivnički',
+    'N:Pivnički;Sava;;;',
+    'ORG:Adversa Agency',
+    'TITLE:Founder',
+    'TEL;TYPE=CELL:+381611050945',
+    'EMAIL:psihotrot@gmail.com',
+    'URL:https://psihotrot-tech.github.io/Adversa/',
+    'ADR;TYPE=WORK:;;Subotica;Vojvodina;;Serbia',
+    'NOTE:AI-Powered Digital Agency — Adversa AI · Video · Analytics · Product',
+    'END:VCARD'
+  ].join('\r\n');
+
+  const blob = new Blob([vcard], {type:'text/vcard'});
+  const vcardUrl = URL.createObjectURL(blob);
+  document.getElementById('vcardBtn').href = vcardUrl;
 
 })();
 </script>
