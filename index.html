@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Adversa NFC Demo</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -12,393 +12,473 @@
   --blue:#2563eb;--purple:#7c3aed;--teal:#0d9488;--orange:#ea580c;
   --line:#e2e4ea;--line2:#c8cad4;--r:12px;--rl:20px;
 }
-html,body{min-height:100%;background:#0a0a0f;font-family:'Space Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
+html,body{min-height:100%;background:#f0f0f0;font-family:'Space Grotesk',sans-serif;-webkit-font-smoothing:antialiased}
 
 /* ══ OUTER SHELL ══ */
-.shell{
-  min-height:100dvh;
-  display:flex;flex-direction:column;align-items:center;
-  padding:32px 16px 48px;
-}
+.shell{min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:28px 0 48px}
 
 /* ══ DEMO HEADER ══ */
-.demo-header{
-  width:100%;max-width:520px;
-  margin-bottom:20px;
-  text-align:center;
-}
-.demo-label{
-  font-family:'Space Mono',monospace;
-  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
-  color:#4f5270;margin-bottom:8px;
-}
-.demo-title{
-  font-size:13px;font-weight:500;color:#6b6f8a;
-  letter-spacing:.04em;
-}
+.demo-header{width:100%;max-width:480px;margin-bottom:16px;text-align:center;padding:0 20px}
+.demo-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:#999;margin-bottom:6px}
+.demo-title{font-size:13px;color:#777;letter-spacing:.02em}
 
 /* ══ TAB BAR ══ */
 .tab-bar{
-  width:100%;max-width:520px;
+  width:100%;max-width:480px;
   display:grid;grid-template-columns:repeat(4,1fr);
-  background:#13131f;
-  border:1px solid #1e1e2e;
-  border-radius:14px;
+  background:#fff;
+  border:1px solid #e0e0e0;
+  border-radius:12px;
   padding:4px;
-  margin-bottom:16px;
+  margin:0 0 0;
   gap:3px;
 }
 .tab-btn{
-  padding:10px 4px;
-  border:none;border-radius:10px;
-  font-family:'Space Grotesk',sans-serif;
-  font-size:11px;font-weight:600;
-  color:#4f5270;
-  background:transparent;
-  cursor:pointer;
-  transition:all .22s ease;
-  display:flex;flex-direction:column;align-items:center;gap:4px;
-  letter-spacing:.02em;
+  padding:10px 4px;border:none;border-radius:8px;
+  font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;
+  color:#999;background:transparent;cursor:pointer;
+  transition:all .2s ease;letter-spacing:.02em;
 }
-.tab-btn .tab-icon{font-size:16px;line-height:1}
-.tab-btn.active{background:#1e1e2e;color:#fff}
-.tab-btn:hover:not(.active){color:#8889aa}
+.tab-btn.active{background:#0a0a0f;color:#fff}
+.tab-btn:hover:not(.active){color:#444}
 
-/* ══ PHONE FRAME ══ */
-.phone-frame{
-  width:100%;max-width:390px;
-  background:var(--bg);
-  border-radius:44px;
-  border:8px solid #1a1a2a;
-  box-shadow:
-    0 0 0 1px #2a2a3e,
-    0 40px 80px rgba(0,0,0,.6),
-    inset 0 0 0 1px rgba(255,255,255,.04);
-  overflow:hidden;
-  position:relative;
-  min-height:760px;
-}
-
-/* notch */
-.phone-frame::before{
-  content:'';
-  position:absolute;top:0;left:50%;transform:translateX(-50%);
-  width:120px;height:32px;
-  background:#1a1a2a;
-  border-radius:0 0 20px 20px;
-  z-index:20;
-}
+/* ══ CONTENT AREA ══ */
+.content{width:100%;max-width:480px;background:#fff;min-height:calc(100dvh - 160px)}
 
 /* ══ SCREENS ══ */
-.screen{display:none;animation:screenIn .35s cubic-bezier(.16,1,.3,1)}
-.screen.active{display:block}
-@keyframes screenIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.screen{display:none}
+.screen.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* ══════════════════════════════
+/* ══ DEMO FOOTER ══ */
+.demo-footer{width:100%;max-width:480px;padding:16px 20px 0;text-align:center;font-family:'Space Mono',monospace;font-size:9px;color:#aaa;letter-spacing:.1em}
+
+/* ════════════════════════════════════
    SCREEN 0 — ADVERSA
-══════════════════════════════ */
+════════════════════════════════════ */
 .s0{background:var(--bg)}
-
-.grid-bg{
-  position:absolute;inset:0;pointer-events:none;z-index:0;
-  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
-  background-size:40px 40px;
-  mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,black 30%,transparent 100%);
-  -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,black 30%,transparent 100%);
-  opacity:.5;
-}
-
-.s0-inner{position:relative;z-index:1;padding:36px 20px 40px}
-
+.grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:40px 40px;mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,black 30%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 30%,black 30%,transparent 100%);opacity:.5}
+.s0-inner{position:relative;z-index:1;padding:28px 20px 40px}
 .s0-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.s0-logo{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:var(--ink)}
-.s0-logo span{color:var(--blue)}
+.s0-logo{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:var(--ink)}.s0-logo span{color:var(--blue)}
 .s0-badge-top{font-family:'Space Mono',monospace;font-size:9px;color:var(--ink3)}
-
-#adversaCanvas{display:block;width:100%;height:260px;cursor:grab}
-#adversaCanvas:active{cursor:grabbing}
+#adversaCanvas{display:block;width:100%;height:260px;cursor:grab}.adversaCanvas:active{cursor:grabbing}
 .drag-hint{text-align:center;font-family:'Space Mono',monospace;font-size:9px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin-top:2px;margin-bottom:16px}
-
 .s0-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:100px;font-family:'Space Mono',monospace;font-size:9px;color:var(--blue);margin-bottom:12px;letter-spacing:.04em}
 .s0-badge::before{content:'';width:5px;height:5px;background:var(--blue);border-radius:50%;animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-
 .s0-h1{font-size:26px;font-weight:700;line-height:1.05;letter-spacing:-.04em;color:var(--ink);margin-bottom:10px}
 .s0-h1 em{font-style:normal;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .s0-sub{font-size:12px;color:var(--ink2);line-height:1.65;margin-bottom:20px}
-
 .s0-stats{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--white);margin-bottom:20px}
-.s0-stat{padding:12px 4px;text-align:center;border-right:1px solid var(--line)}
-.s0-stat:last-child{border-right:none}
+.s0-stat{padding:12px 4px;text-align:center;border-right:1px solid var(--line)}.s0-stat:last-child{border-right:none}
 .s0-sn{font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:var(--ink);display:block;line-height:1}
 .s0-sl{font-size:8px;color:var(--ink3);margin-top:3px;letter-spacing:.03em}
-
 .s0-ticker{margin:0 -20px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--white);overflow:hidden;padding:8px 0;margin-bottom:20px}
 .s0-ticker-inner{display:flex;animation:ticker 18s linear infinite;white-space:nowrap}
 .t-item{display:flex;align-items:center;gap:8px;padding:0 20px;font-family:'Space Mono',monospace;font-size:9px;color:var(--ink3);letter-spacing:.08em}
 .t-dot{width:3px;height:3px;background:var(--blue);border-radius:50%;flex-shrink:0}
 @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
 .s0-divs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
 .s0-div{border-radius:var(--r);border:1px solid var(--line);padding:14px 12px;text-decoration:none;transition:transform .18s,box-shadow .18s;display:block}
 .s0-div:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.07)}
-.d-ai{background:linear-gradient(135deg,#f0f7ff,#e8f2ff)}
-.d-video{background:linear-gradient(135deg,#fff7f0,#fff0e8)}
-.d-analytics{background:linear-gradient(135deg,#f0fdf9,#e8faf5)}
-.d-product{background:linear-gradient(135deg,#fdf4ff,#f5f0ff)}
+.d-ai{background:linear-gradient(135deg,#f0f7ff,#e8f2ff)}.d-video{background:linear-gradient(135deg,#fff7f0,#fff0e8)}.d-analytics{background:linear-gradient(135deg,#f0fdf9,#e8faf5)}.d-product{background:linear-gradient(135deg,#fdf4ff,#f5f0ff)}
 .d-ico{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
-.d-ai .d-ico{background:linear-gradient(135deg,#2563eb,#7c3aed)}
-.d-video .d-ico{background:linear-gradient(135deg,#ea580c,#f59e0b)}
-.d-analytics .d-ico{background:linear-gradient(135deg,#0d9488,#0891b2)}
-.d-product .d-ico{background:linear-gradient(135deg,#7c3aed,#a855f7)}
+.d-ai .d-ico{background:linear-gradient(135deg,#2563eb,#7c3aed)}.d-video .d-ico{background:linear-gradient(135deg,#ea580c,#f59e0b)}.d-analytics .d-ico{background:linear-gradient(135deg,#0d9488,#0891b2)}.d-product .d-ico{background:linear-gradient(135deg,#7c3aed,#a855f7)}
 .d-ico svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .d-name{font-size:12px;font-weight:700;color:var(--ink);letter-spacing:-.02em}
-.d-name span.ai{color:var(--blue)}.d-name span.vi{color:var(--orange)}.d-name span.an{color:var(--teal)}.d-name span.pr{color:var(--purple)}
+.d-name .ai{color:var(--blue)}.d-name .vi{color:var(--orange)}.d-name .an{color:var(--teal)}.d-name .pr{color:var(--purple)}
 .d-sub{font-size:9px;color:var(--ink3);margin-top:1px;font-family:'Space Mono',monospace}
-
 .s0-rule{height:1px;background:var(--line);margin:4px 0 16px}
-
 .s0-cta{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
 .btn-p{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;background:var(--ink);color:#fff;border-radius:10px;font-size:13px;font-weight:600;text-decoration:none;transition:all .15s;-webkit-tap-highlight-color:transparent}
 .btn-p:active{transform:scale(.98)}
 .btn-s{display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 20px;background:var(--white);color:var(--ink);border-radius:10px;font-size:13px;font-weight:600;text-decoration:none;border:1px solid var(--line);-webkit-tap-highlight-color:transparent}
 .btn-arr{margin-left:auto;opacity:.5}
-
 .s0-contact{background:var(--white);border:1px solid var(--line);border-radius:var(--rl);overflow:hidden;margin-bottom:20px}
-.s0-ci{padding:12px 16px;border-bottom:1px solid var(--line)}
-.s0-ci:last-child{border-bottom:none}
+.s0-ci{padding:12px 16px;border-bottom:1px solid var(--line)}.s0-ci:last-child{border-bottom:none}
 .s0-cl{font-family:'Space Mono',monospace;font-size:8px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px}
 .s0-cv{font-size:13px;font-weight:500;color:var(--ink);text-decoration:none;display:block}
-
 .s0-footer{display:flex;justify-content:space-between;padding-top:14px;border-top:1px solid var(--line)}
 .s0-footer p{font-family:'Space Mono',monospace;font-size:9px;color:var(--ink3)}
 
-/* ══════════════════════════════
+/* ════════════════════════════════════
    SCREEN 1 — RESTORAN
-══════════════════════════════ */
-.s1{background:#0f0a06}
+════════════════════════════════════ */
+.s1{background:#080604}
 
+/* hero */
 .s1-hero{
-  position:relative;
-  height:260px;
-  background:linear-gradient(160deg,#1a0f06 0%,#2d1a08 40%,#1a1206 100%);
-  overflow:hidden;
+  position:relative;height:320px;overflow:hidden;
+  background:linear-gradient(175deg,#0f0a05 0%,#1c1108 50%,#100c06 100%);
   display:flex;flex-direction:column;justify-content:flex-end;
-  padding:24px 24px 28px;
+  padding:32px 28px;
 }
-
-/* decorative food elements */
 .s1-hero::before{
   content:'';position:absolute;inset:0;
   background:
-    radial-gradient(circle at 80% 20%,rgba(234,88,12,.18) 0%,transparent 50%),
-    radial-gradient(circle at 20% 70%,rgba(161,98,7,.12) 0%,transparent 50%);
+    radial-gradient(ellipse 60% 50% at 80% 20%,rgba(196,130,50,.12) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 60% at 10% 80%,rgba(120,60,10,.08) 0%,transparent 70%);
 }
-.s1-hero-pattern{
-  position:absolute;inset:0;opacity:.06;
-  background-image:
-    repeating-linear-gradient(45deg,#ea580c 0,#ea580c 1px,transparent 0,transparent 50%),
-    repeating-linear-gradient(-45deg,#ea580c 0,#ea580c 1px,transparent 0,transparent 50%);
-  background-size:24px 24px;
+/* decorative line pattern */
+.s1-hero::after{
+  content:'';position:absolute;inset:0;
+  background-image:repeating-linear-gradient(90deg,rgba(196,130,50,.04) 0,rgba(196,130,50,.04) 1px,transparent 0,transparent 60px);
+  pointer-events:none;
 }
-.s1-hero-emoji{position:absolute;font-size:80px;right:-10px;top:20px;opacity:.18;transform:rotate(15deg)}
-.s1-topbar2{position:absolute;top:0;left:0;right:0;padding:40px 24px 0;display:flex;justify-content:space-between;align-items:center;z-index:2}
-.s1-logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#fff;letter-spacing:.02em}
-.s1-logo-sub{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.4);letter-spacing:.12em;text-transform:uppercase}
-.s1-open{display:flex;align-items:center;gap:5px;font-family:'Space Mono',monospace;font-size:9px;color:#4ade80;letter-spacing:.06em}
-.s1-open::before{content:'';width:6px;height:6px;background:#4ade80;border-radius:50%;animation:blink 2s infinite}
-.s1-tagline{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;font-style:italic;color:#fff;line-height:1.1;position:relative;z-index:2}
-.s1-tagline em{font-style:normal;color:#f97316}
-.s1-sub2{font-size:12px;color:rgba(255,255,255,.55);margin-top:6px;position:relative;z-index:2}
-
-.s1-body{padding:20px 20px 36px;background:#0f0a06}
-
-/* quick actions */
-.s1-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px}
-.s1-action{
-  background:#1a1208;border:1px solid #2a1e0a;
-  border-radius:12px;padding:14px 8px;
-  text-align:center;text-decoration:none;
-  transition:all .18s;-webkit-tap-highlight-color:transparent;
-  display:flex;flex-direction:column;align-items:center;gap:6px;
+.s1-topbar{
+  position:absolute;top:0;left:0;right:0;
+  padding:32px 28px 0;
+  display:flex;justify-content:space-between;align-items:flex-start;
+  z-index:2;
 }
-.s1-action:active{transform:scale(.97)}
-.s1-action-icon{font-size:22px}
-.s1-action-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.7);letter-spacing:.04em}
-.s1-action.primary{background:linear-gradient(135deg,#ea580c,#c2410c);border-color:transparent}
-.s1-action.primary .s1-action-label{color:#fff}
+.s1-logo{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-weight:700;color:#fff;
+  letter-spacing:.01em;line-height:1;
+}
+.s1-logo-sub{
+  font-family:'Space Mono',monospace;font-size:8px;
+  color:rgba(255,255,255,.3);letter-spacing:.14em;
+  text-transform:uppercase;margin-top:4px;
+}
+.s1-status{
+  display:flex;align-items:center;gap:6px;
+  font-family:'Space Mono',monospace;font-size:9px;
+  color:rgba(200,160,80,.9);letter-spacing:.08em;
+}
+.s1-status::before{content:'';width:5px;height:5px;border-radius:50%;background:#c8a050;animation:blink 2s infinite}
+.s1-tagline{
+  font-family:'Playfair Display',serif;
+  font-size:36px;font-weight:700;
+  line-height:1.05;color:#fff;
+  letter-spacing:-.01em;
+  position:relative;z-index:2;
+}
+.s1-tagline em{font-style:italic;color:#c8a050}
+.s1-desc{font-size:12px;color:rgba(255,255,255,.4);margin-top:10px;line-height:1.6;position:relative;z-index:2}
 
-/* section label */
-.s1-sec{font-family:'Space Mono',monospace;font-size:10px;color:#6b4a1e;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+.s1-body{padding:0 0 40px}
 
-/* menu cats */
-.s1-menu-tabs{display:flex;gap:6px;margin-bottom:16px;overflow-x:auto;scrollbar-width:none}
-.s1-menu-tabs::-webkit-scrollbar{display:none}
-.m-tab{padding:6px 14px;border-radius:100px;font-size:11px;font-weight:600;white-space:nowrap;cursor:pointer;border:1px solid #2a1e0a;color:rgba(255,255,255,.4);background:transparent;font-family:'Space Grotesk',sans-serif;transition:all .18s}
-.m-tab.active{background:#ea580c;color:#fff;border-color:#ea580c}
+/* navigation pills */
+.s1-nav{
+  display:flex;gap:0;border-bottom:1px solid #1a1208;
+  background:#0d0a06;
+  overflow-x:auto;scrollbar-width:none;
+}
+.s1-nav::-webkit-scrollbar{display:none}
+.s1-nav-item{
+  padding:14px 20px;font-size:11px;font-weight:600;
+  color:rgba(255,255,255,.3);white-space:nowrap;cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:all .2s;font-family:'Space Grotesk',sans-serif;
+  letter-spacing:.06em;text-transform:uppercase;
+}
+.s1-nav-item.active{color:#c8a050;border-bottom-color:#c8a050}
 
-.s1-menu-items{display:flex;flex-direction:column;gap:2px;margin-bottom:24px}
-.s1-mi{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #1a1208}
-.s1-mi:last-child{border-bottom:none}
-.s1-mi-left{display:flex;align-items:center;gap:10px}
-.s1-mi-emoji{font-size:22px;width:36px;text-align:center}
-.s1-mi-name{font-size:13px;font-weight:600;color:#fff}
-.s1-mi-desc{font-size:10px;color:rgba(255,255,255,.4);margin-top:2px}
-.s1-mi-price{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:#f97316}
+/* menu section */
+.s1-menu-section{padding:24px 24px 0}
+.s1-section-title{
+  font-family:'Playfair Display',serif;
+  font-size:13px;font-style:italic;
+  color:rgba(255,255,255,.3);
+  letter-spacing:.06em;margin-bottom:16px;
+}
+
+.s1-items{display:flex;flex-direction:column}
+.s1-item{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:18px 0;border-bottom:1px solid #1a1208;
+}
+.s1-item:last-child{border-bottom:none}
+.s1-item-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:5px;letter-spacing:-.01em}
+.s1-item-desc{font-size:11px;color:rgba(255,255,255,.35);line-height:1.5;max-width:220px}
+.s1-item-price{
+  font-family:'Space Mono',monospace;font-size:13px;
+  font-weight:700;color:#c8a050;flex-shrink:0;margin-left:16px;
+}
 
 /* rezervacija */
-.s1-rezerv{background:linear-gradient(135deg,#1a1208,#221508);border:1px solid #2a1e0a;border-radius:var(--rl);padding:20px;margin-bottom:20px}
-.s1-rezerv-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
-.s1-rezerv-sub{font-size:11px;color:rgba(255,255,255,.4);margin-bottom:16px}
-.s1-input-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-.s1-input{width:100%;padding:10px 12px;background:#0f0a06;border:1px solid #2a1e0a;border-radius:8px;color:#fff;font-size:12px;font-family:'Space Grotesk',sans-serif;outline:none}
-.s1-input::placeholder{color:rgba(255,255,255,.25)}
-.s1-btn-full{width:100%;padding:13px;background:linear-gradient(135deg,#ea580c,#c2410c);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;font-family:'Space Grotesk',sans-serif;cursor:pointer;letter-spacing:.02em;margin-top:8px}
+.s1-rezerv-section{padding:28px 24px;border-top:1px solid #1a1208}
+.s1-rezerv-title{font-family:'Playfair Display',serif;font-size:20px;color:#fff;margin-bottom:4px}
+.s1-rezerv-sub{font-size:11px;color:rgba(255,255,255,.3);margin-bottom:20px;letter-spacing:.02em}
+.s1-field{margin-bottom:10px}
+.s1-label{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:6px}
+.s1-input{
+  width:100%;padding:12px 14px;
+  background:#0f0a06;border:1px solid #2a1e0a;
+  border-radius:8px;color:#fff;
+  font-size:13px;font-family:'Space Grotesk',sans-serif;outline:none;
+  transition:border-color .2s;
+}
+.s1-input:focus{border-color:#c8a050}
+.s1-input::placeholder{color:rgba(255,255,255,.2)}
+.s1-input-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.s1-btn{
+  width:100%;padding:14px;margin-top:6px;
+  background:#c8a050;border:none;border-radius:8px;
+  color:#000;font-size:13px;font-weight:700;
+  font-family:'Space Grotesk',sans-serif;cursor:pointer;letter-spacing:.04em;
+  transition:background .2s;
+}
+.s1-btn:hover{background:#d4ac5a}
 
-/* info row */
-.s1-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-.s1-info-card{background:#1a1208;border:1px solid #2a1e0a;border-radius:10px;padding:12px}
-.s1-info-label{font-family:'Space Mono',monospace;font-size:8px;color:#6b4a1e;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
-.s1-info-val{font-size:12px;font-weight:600;color:rgba(255,255,255,.8)}
+/* info */
+.s1-info-section{padding:0 24px 32px;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1a1208;border:1px solid #1a1208;border-radius:12px;overflow:hidden;margin:0 24px}
+.s1-info-block{padding:16px;background:#0d0a06}
+.s1-info-label{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.25);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+.s1-info-val{font-size:13px;font-weight:500;color:rgba(255,255,255,.7)}
 
-/* ══════════════════════════════
+/* contact */
+.s1-contact{padding:24px;border-top:1px solid #1a1208;display:flex;gap:10px}
+.s1-contact-btn{
+  flex:1;padding:13px;text-align:center;
+  border-radius:8px;font-size:12px;font-weight:600;
+  text-decoration:none;transition:all .18s;
+  font-family:'Space Grotesk',sans-serif;letter-spacing:.02em;
+}
+.s1-cb-primary{background:#c8a050;color:#000}
+.s1-cb-secondary{background:#141008;border:1px solid #2a1e0a;color:rgba(255,255,255,.6)}
+
+/* ════════════════════════════════════
    SCREEN 2 — FRIZERSKI SALON
-══════════════════════════════ */
-.s2{background:#0d0d0d}
+════════════════════════════════════ */
+.s2{background:#fafafa}
 
 .s2-hero{
-  height:240px;position:relative;overflow:hidden;
-  background:linear-gradient(160deg,#0d0d0d 0%,#181818 100%);
+  height:300px;position:relative;overflow:hidden;
+  background:#0a0a0a;
   display:flex;flex-direction:column;justify-content:flex-end;
-  padding:24px 24px 28px;
+  padding:32px 28px;
 }
 .s2-hero::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 70% 0%,rgba(168,85,247,.15) 0%,transparent 60%),
-             radial-gradient(ellipse at 20% 100%,rgba(124,58,237,.1) 0%,transparent 50%);
+  background:
+    radial-gradient(ellipse 70% 50% at 100% 0%,rgba(200,200,200,.06) 0%,transparent 60%),
+    radial-gradient(ellipse 50% 60% at 0% 100%,rgba(150,150,150,.04) 0%,transparent 60%);
 }
-.s2-scissors{position:absolute;right:24px;top:44px;font-size:64px;opacity:.12;transform:rotate(-30deg)}
-.s2-topbar3{position:absolute;top:0;left:0;right:0;padding:40px 24px 0;display:flex;justify-content:space-between;align-items:flex-end;z-index:2}
-.s2-logo{font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:#fff;letter-spacing:.08em}
-.s2-logo span{color:#a855f7}
-.s2-tagline2{font-size:28px;font-weight:700;line-height:1.05;letter-spacing:-.03em;color:#fff;position:relative;z-index:2}
-.s2-tagline2 em{font-style:normal;background:linear-gradient(135deg,#a855f7,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.s2-sub3{font-size:12px;color:rgba(255,255,255,.45);margin-top:6px;position:relative;z-index:2}
+/* subtle editorial lines */
+.s2-lines{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0,rgba(255,255,255,.025) 1px,transparent 0,transparent 80px);
+}
+.s2-topbar{
+  position:absolute;top:0;left:0;right:0;
+  padding:32px 28px 0;
+  display:flex;justify-content:space-between;align-items:center;z-index:2;
+}
+.s2-logo{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:18px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:#fff;
+}
+.s2-logo-tagline{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase}
+.s2-since{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.06em}
+.s2-tagline{
+  font-size:34px;font-weight:700;line-height:1.03;
+  letter-spacing:-.04em;color:#fff;
+  position:relative;z-index:2;
+}
+.s2-tagline em{font-style:normal;color:rgba(255,255,255,.3)}
+.s2-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:10px;position:relative;z-index:2;letter-spacing:.04em}
 
-.s2-body{padding:20px 20px 36px}
+.s2-body{background:#fafafa}
 
-/* booking strip */
-.s2-book{background:linear-gradient(135deg,#a855f7,#7c3aed);border-radius:14px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;text-decoration:none;-webkit-tap-highlight-color:transparent}
-.s2-book-text strong{display:block;font-size:15px;font-weight:700;color:#fff}
-.s2-book-text span{font-size:11px;color:rgba(255,255,255,.7)}
-.s2-book-arrow{font-size:22px;color:#fff}
+/* book banner */
+.s2-book{
+  margin:0;
+  background:#0a0a0a;
+  padding:20px 28px;
+  display:flex;justify-content:space-between;align-items:center;
+  text-decoration:none;-webkit-tap-highlight-color:transparent;
+}
+.s2-book:active{opacity:.9}
+.s2-book-label{font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.s2-book-text{font-size:16px;font-weight:700;color:#fff;letter-spacing:-.02em}
+.s2-book-arrow{
+  width:42px;height:42px;border:1px solid rgba(255,255,255,.15);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:18px;flex-shrink:0;
+}
+
+/* section */
+.s2-section{padding:28px 24px 0}
+.s2-section-eyebrow{font-family:'Space Mono',monospace;font-size:9px;color:#aaa;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px}
 
 /* usluge */
-.s2-sec{font-family:'Space Mono',monospace;font-size:10px;color:#4a2a6a;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+.s2-services{display:flex;flex-direction:column;border:1px solid #ebebeb;border-radius:12px;overflow:hidden;margin-bottom:28px}
+.s2-svc{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 18px;border-bottom:1px solid #f0f0f0;background:#fff;
+  cursor:pointer;transition:background .15s;
+}
+.s2-svc:last-child{border-bottom:none}
+.s2-svc:hover{background:#f8f8f8}
+.s2-svc-name{font-size:13px;font-weight:600;color:#0a0a0a;margin-bottom:3px}
+.s2-svc-dur{font-size:10px;color:#aaa;font-family:'Space Mono',monospace}
+.s2-svc-right{text-align:right}
+.s2-svc-price{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:#0a0a0a;margin-bottom:3px}
+.s2-svc-book{font-size:10px;color:#aaa;font-family:'Space Mono',monospace}
 
-.s2-services{display:flex;flex-direction:column;gap:3px;margin-bottom:24px}
-.s2-svc{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:#141414;border:1px solid #1e1e1e;border-radius:10px;cursor:pointer;transition:border-color .18s}
-.s2-svc:hover{border-color:#3a1a5a}
-.s2-svc-left{display:flex;align-items:center;gap:12px}
-.s2-svc-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.s2-svc-name{font-size:13px;font-weight:600;color:#fff}
-.s2-svc-dur{font-size:10px;color:rgba(255,255,255,.35);margin-top:2px;font-family:'Space Mono',monospace}
-.s2-svc-price{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:#a855f7}
-
-/* galerija */
-.s2-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:24px}
-.s2-gal-item{border-radius:10px;overflow:hidden;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:32px;position:relative}
-.s2-gal-item::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.6))}
+/* galerija radova */
+.s2-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-bottom:28px}
+.s2-gal{
+  aspect-ratio:1;border-radius:0;overflow:hidden;position:relative;
+  background:#111;
+}
+.s2-gal:first-child{border-radius:10px 0 0 10px}
+.s2-gal:last-child{border-radius:0 10px 10px 0}
+/* Abstract hair color gradients — premium, not cheesy */
+.s2-g1{background:linear-gradient(135deg,#1a1a1a 0%,#3a3a3a 40%,#1a1a1a 100%)}
+.s2-g2{background:linear-gradient(135deg,#2d1f1f 0%,#5a3a2a 40%,#3a2a1a 100%)}
+.s2-g3{background:linear-gradient(160deg,#0a0a0a 0%,#2a2a2a 100%)}
+.s2-g4{background:linear-gradient(135deg,#1a1520 0%,#2d2040 100%)}
+.s2-g5{background:linear-gradient(135deg,#151515 0%,#404040 100%)}
+.s2-g6{background:linear-gradient(160deg,#200a0a 0%,#4a1a1a 100%)}
+.s2-gal-label{position:absolute;bottom:0;left:0;right:0;padding:10px 8px 8px;background:linear-gradient(to top,rgba(0,0,0,.7),transparent);font-size:9px;color:rgba(255,255,255,.7);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
 
 /* tim */
-.s2-team{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
-.s2-member{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#141414;border:1px solid #1e1e1e;border-radius:10px}
-.s2-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.s2-member-name{font-size:13px;font-weight:600;color:#fff}
-.s2-member-role{font-size:10px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;margin-top:2px}
-.s2-member-avail{margin-left:auto;font-size:9px;padding:3px 8px;border-radius:100px;font-family:'Space Mono',monospace;font-weight:600}
-.avail-yes{background:rgba(74,222,128,.15);color:#4ade80}
-.avail-no{background:rgba(255,255,255,.06);color:rgba(255,255,255,.3)}
+.s2-team{display:flex;flex-direction:column;gap:1px;border:1px solid #ebebeb;border-radius:12px;overflow:hidden;margin-bottom:28px}
+.s2-member{
+  display:flex;align-items:center;gap:14px;
+  padding:16px 18px;background:#fff;border-bottom:1px solid #f0f0f0;
+}
+.s2-member:last-child{border-bottom:none}
+.s2-avatar{
+  width:44px;height:44px;border-radius:50%;
+  background:#111;display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;font-size:14px;font-weight:700;
+  color:#fff;flex-shrink:0;letter-spacing:-.02em;
+}
+.s2-member-name{font-size:13px;font-weight:700;color:#0a0a0a;margin-bottom:2px}
+.s2-member-role{font-size:10px;color:#aaa;font-family:'Space Mono',monospace;letter-spacing:.04em}
+.s2-avail{
+  margin-left:auto;font-size:9px;padding:4px 10px;
+  border-radius:100px;font-family:'Space Mono',monospace;font-weight:600;white-space:nowrap;
+}
+.av-yes{background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
+.av-no{background:#f5f5f5;color:#aaa;border:1px solid #e5e5e5}
 
-/* ══════════════════════════════
+/* info */
+.s2-info{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 24px 32px}
+.s2-info-card{background:#fff;border:1px solid #ebebeb;border-radius:10px;padding:14px}
+.s2-info-label{font-family:'Space Mono',monospace;font-size:8px;color:#aaa;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.s2-info-val{font-size:13px;font-weight:600;color:#0a0a0a}
+
+/* ════════════════════════════════════
    SCREEN 3 — STOMATOLOG
-══════════════════════════════ */
-.s3{background:#f0f9ff}
+════════════════════════════════════ */
+.s3{background:#fff}
 
 .s3-hero{
-  height:220px;position:relative;overflow:hidden;
-  background:linear-gradient(160deg,#0c4a6e 0%,#0369a1 60%,#0ea5e9 100%);
+  height:260px;position:relative;overflow:hidden;
+  background:linear-gradient(160deg,#0a1628 0%,#0d2040 50%,#0a1628 100%);
   display:flex;flex-direction:column;justify-content:flex-end;
-  padding:24px 24px 28px;
+  padding:32px 28px;
 }
 .s3-hero::before{
   content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 80% 0%,rgba(14,165,233,.3) 0%,transparent 60%);
+  background:radial-gradient(ellipse 80% 60% at 60% 0%,rgba(14,165,233,.12) 0%,transparent 70%);
 }
-.s3-cross{position:absolute;right:20px;top:44px;font-size:56px;opacity:.15}
-.s3-topbar4{position:absolute;top:0;left:0;right:0;padding:40px 24px 0;display:flex;justify-content:space-between;align-items:center;z-index:2}
-.s3-logo2{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#fff;letter-spacing:.04em}
-.s3-logo2 span{font-weight:300;opacity:.7}
-.s3-cert{font-family:'Space Mono',monospace;font-size:8px;color:rgba(255,255,255,.5);letter-spacing:.08em}
-.s3-tagline3{font-size:26px;font-weight:700;line-height:1.08;letter-spacing:-.03em;color:#fff;position:relative;z-index:2}
-.s3-tagline3 em{font-style:normal;color:#7dd3fc}
-.s3-sub4{font-size:11px;color:rgba(255,255,255,.6);margin-top:6px;position:relative;z-index:2}
+.s3-topbar{
+  position:absolute;top:0;left:0;right:0;
+  padding:32px 28px 0;
+  display:flex;justify-content:space-between;align-items:flex-start;z-index:2;
+}
+.s3-logo{font-size:15px;font-weight:700;color:#fff;letter-spacing:.02em;font-family:'Space Grotesk',sans-serif}
+.s3-logo span{font-weight:300;opacity:.5}
+.s3-cert{
+  display:flex;align-items:center;gap:6px;
+  font-family:'Space Mono',monospace;font-size:8px;
+  color:rgba(255,255,255,.4);letter-spacing:.08em;text-align:right;
+}
+.s3-tagline{font-size:30px;font-weight:700;line-height:1.07;letter-spacing:-.03em;color:#fff;position:relative;z-index:2}
+.s3-tagline em{font-style:normal;color:#7dd3fc}
+.s3-desc{font-size:11px;color:rgba(255,255,255,.4);margin-top:8px;line-height:1.6;position:relative;z-index:2}
 
-.s3-body{padding:20px 20px 36px;background:#f0f9ff}
+.s3-body{background:#fff}
 
 /* hitna */
-.s3-hitna{background:#dc2626;border-radius:12px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;text-decoration:none;-webkit-tap-highlight-color:transparent}
-.s3-hitna-left strong{display:block;font-size:14px;font-weight:700;color:#fff}
-.s3-hitna-left span{font-size:10px;color:rgba(255,255,255,.75)}
-.s3-hitna-icon{font-size:24px}
+.s3-hitna{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 24px;background:#0a1628;
+  text-decoration:none;-webkit-tap-highlight-color:transparent;
+}
+.s3-hitna-text strong{display:block;font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
+.s3-hitna-text span{font-size:10px;color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;letter-spacing:.04em}
+.s3-hitna-badge{
+  background:#dc2626;color:#fff;
+  font-family:'Space Mono',monospace;font-size:9px;font-weight:700;
+  padding:6px 12px;border-radius:6px;letter-spacing:.06em;white-space:nowrap;
+}
 
 /* zakaži */
-.s3-zakazi{background:#fff;border:1px solid #bae6fd;border-radius:var(--rl);padding:18px;margin-bottom:20px}
-.s3-zakazi-title{font-size:15px;font-weight:700;color:#0c4a6e;margin-bottom:4px}
-.s3-zakazi-sub{font-size:11px;color:#64748b;margin-bottom:14px}
-.s3-service-sel{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
-.s3-sel{padding:10px 8px;border:1px solid #e0f2fe;border-radius:8px;text-align:center;cursor:pointer;transition:all .18s;background:#f0f9ff}
-.s3-sel.active{background:#0ea5e9;border-color:#0ea5e9}
-.s3-sel-icon{font-size:18px;display:block;margin-bottom:4px}
-.s3-sel-name{font-size:10px;font-weight:600;color:#0c4a6e}
+.s3-book-section{padding:24px}
+.s3-book-title{font-size:18px;font-weight:700;color:#0a1628;margin-bottom:4px;letter-spacing:-.02em}
+.s3-book-sub{font-size:11px;color:#94a3b8;margin-bottom:20px}
+
+.s3-services-sel{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
+.s3-sel{
+  padding:12px;border:1px solid #e2e8f0;border-radius:8px;
+  text-align:left;cursor:pointer;transition:all .18s;background:#fff;
+}
+.s3-sel.active{background:#0a1628;border-color:#0a1628}
+.s3-sel-name{font-size:12px;font-weight:700;color:#0a1628;display:block;margin-bottom:2px}
 .s3-sel.active .s3-sel-name{color:#fff}
-.s3-input2{width:100%;padding:10px 12px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;color:#0c4a6e;font-size:12px;font-family:'Space Grotesk',sans-serif;outline:none;margin-bottom:8px}
-.s3-input2::placeholder{color:#94a3b8}
-.s3-btn-blue{width:100%;padding:13px;background:linear-gradient(135deg,#0ea5e9,#0369a1);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;font-family:'Space Grotesk',sans-serif;cursor:pointer}
+.s3-sel-price{font-family:'Space Mono',monospace;font-size:10px;color:#94a3b8}
+.s3-sel.active .s3-sel-price{color:rgba(255,255,255,.5)}
 
-/* usluge */
-.s3-sec{font-family:'Space Mono',monospace;font-size:10px;color:#0369a1;letter-spacing:.14em;text-transform:uppercase;margin-bottom:12px}
+.s3-field{margin-bottom:10px}
+.s3-label{font-family:'Space Mono',monospace;font-size:9px;color:#94a3b8;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:6px}
+.s3-input{
+  width:100%;padding:12px 14px;
+  background:#f8fafc;border:1px solid #e2e8f0;
+  border-radius:8px;color:#0a1628;font-size:13px;
+  font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color .2s;
+}
+.s3-input:focus{border-color:#0ea5e9}
+.s3-input::placeholder{color:#cbd5e1}
+.s3-input-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.s3-btn{
+  width:100%;padding:14px;background:#0a1628;border:none;border-radius:8px;
+  color:#fff;font-size:13px;font-weight:700;font-family:'Space Grotesk',sans-serif;
+  cursor:pointer;letter-spacing:.02em;margin-top:6px;transition:background .2s;
+}
+.s3-btn:hover{background:#0d2040}
 
-.s3-services{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
-.s3-svc2{background:#fff;border:1px solid #e0f2fe;border-radius:12px;padding:14px 12px;transition:all .18s}
-.s3-svc2:hover{border-color:#7dd3fc;transform:translateY(-2px)}
-.s3-svc2-icon{font-size:24px;margin-bottom:8px;display:block}
-.s3-svc2-name{font-size:12px;font-weight:700;color:#0c4a6e;margin-bottom:2px}
-.s3-svc2-price{font-family:'Space Mono',monospace;font-size:11px;color:#0ea5e9;font-weight:700}
+/* usluge grid */
+.s3-services-section{padding:0 24px 24px}
+.s3-eyebrow{font-family:'Space Mono',monospace;font-size:9px;color:#94a3b8;letter-spacing:.16em;text-transform:uppercase;margin-bottom:14px;padding-top:4px}
+
+.s3-svcs{display:flex;flex-direction:column;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:24px}
+.s3-svc{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:15px 18px;border-bottom:1px solid #f1f5f9;background:#fff;
+}
+.s3-svc:last-child{border-bottom:none}
+.s3-svc-name{font-size:13px;font-weight:600;color:#0a1628;margin-bottom:2px}
+.s3-svc-note{font-size:10px;color:#94a3b8}
+.s3-svc-price{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:#0ea5e9;white-space:nowrap;margin-left:12px}
 
 /* tim */
-.s3-team{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-.s3-doc{background:#fff;border:1px solid #e0f2fe;border-radius:12px;padding:14px 12px;text-align:center}
-.s3-doc-avatar{font-size:32px;margin-bottom:8px;display:block}
-.s3-doc-name{font-size:12px;font-weight:700;color:#0c4a6e}
-.s3-doc-spec{font-size:9px;color:#64748b;font-family:'Space Mono',monospace;margin-top:2px}
-.s3-doc-avail{display:inline-block;margin-top:6px;font-size:9px;padding:3px 8px;border-radius:100px;background:#dcfce7;color:#16a34a;font-family:'Space Mono',monospace}
+.s3-team-section{padding:0 24px 24px}
+.s3-doctors{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.s3-doc{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:18px 14px}
+.s3-doc-initials{
+  width:44px;height:44px;border-radius:50%;
+  background:#0a1628;display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;font-size:13px;font-weight:700;
+  color:#fff;margin-bottom:12px;
+}
+.s3-doc-name{font-size:13px;font-weight:700;color:#0a1628;margin-bottom:2px;letter-spacing:-.01em}
+.s3-doc-spec{font-size:9px;color:#94a3b8;font-family:'Space Mono',monospace;letter-spacing:.04em;line-height:1.4;margin-bottom:10px}
+.s3-doc-avail{display:inline-block;font-size:9px;padding:3px 9px;border-radius:100px;font-family:'Space Mono',monospace;font-weight:600;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0}
 
 /* info */
-.s3-info{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.s3-info-card2{background:#fff;border:1px solid #e0f2fe;border-radius:10px;padding:12px}
-.s3-info-label2{font-family:'Space Mono',monospace;font-size:8px;color:#0369a1;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
-.s3-info-val2{font-size:12px;font-weight:600;color:#0c4a6e}
-
-/* ══ DEMO FOOTER ══ */
-.demo-footer{
-  width:100%;max-width:520px;
-  margin-top:24px;
-  text-align:center;
-  font-family:'Space Mono',monospace;
-  font-size:10px;color:#2a2a3e;
-  letter-spacing:.1em;
-}
+.s3-info{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e2e8f0;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;margin:0 24px 32px}
+.s3-info-block{background:#fff;padding:14px 16px}
+.s3-info-label{font-family:'Space Mono',monospace;font-size:8px;color:#94a3b8;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.s3-info-val{font-size:13px;font-weight:600;color:#0a1628}
 </style>
 </head>
 <body>
@@ -406,27 +486,17 @@ html,body{min-height:100%;background:#0a0a0f;font-family:'Space Grotesk',sans-se
 
   <div class="demo-header">
     <p class="demo-label">Adversa Agency · NFC Demo</p>
-    <p class="demo-title">Pritisnite tab da vidite primer za vašu industriju</p>
+    <p class="demo-title">Izaberite industriju i vidite kako izgleda vaša vizit kartica</p>
   </div>
 
-  <!-- TAB BAR -->
   <div class="tab-bar">
-    <button class="tab-btn active" onclick="switchTab(0)">
-      <span class="tab-icon">◈</span>Adversa
-    </button>
-    <button class="tab-btn" onclick="switchTab(1)">
-      <span class="tab-icon">🍽</span>Restoran
-    </button>
-    <button class="tab-btn" onclick="switchTab(2)">
-      <span class="tab-icon">✂</span>Salon
-    </button>
-    <button class="tab-btn" onclick="switchTab(3)">
-      <span class="tab-icon">🦷</span>Stomatolog
-    </button>
+    <button class="tab-btn active" onclick="switchTab(0)">Adversa</button>
+    <button class="tab-btn" onclick="switchTab(1)">Restoran</button>
+    <button class="tab-btn" onclick="switchTab(2)">Salon</button>
+    <button class="tab-btn" onclick="switchTab(3)">Stomatolog</button>
   </div>
 
-  <!-- PHONE FRAME -->
-  <div class="phone-frame">
+  <div class="content">
 
     <!-- ══ SCREEN 0: ADVERSA ══ -->
     <div class="screen s0 active" id="screen-0">
@@ -462,42 +532,31 @@ html,body{min-height:100%;background:#0a0a0f;font-family:'Space Grotesk',sans-se
             <span class="t-item"><span class="t-dot"></span>Adversa Product</span>
             <span class="t-item"><span class="t-dot"></span>Claude API</span>
             <span class="t-item"><span class="t-dot"></span>Kling AI</span>
-            <span class="t-item"><span class="t-dot"></span>AI Chatbotovi</span>
           </div>
         </div>
         <div class="s0-divs">
           <a class="s0-div d-ai" href="https://psihotrot-tech.github.io/Adversa/#sectors" target="_blank">
             <div class="d-ico"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-            <div class="d-name">Adversa <span class="ai">AI</span></div>
-            <div class="d-sub">Chatbots</div>
+            <div class="d-name">Adversa <span class="ai">AI</span></div><div class="d-sub">Chatbots</div>
           </a>
           <a class="s0-div d-video" href="https://www.youtube.com/watch?v=yK9kZSXDUsI" target="_blank">
             <div class="d-ico"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>
-            <div class="d-name">Adversa <span class="vi">Video</span></div>
-            <div class="d-sub">AI Video</div>
+            <div class="d-name">Adversa <span class="vi">Video</span></div><div class="d-sub">AI Video</div>
           </a>
           <a class="s0-div d-analytics" href="https://psihotrot-tech.github.io/Adversa/#work" target="_blank">
             <div class="d-ico"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
-            <div class="d-name">Adversa <span class="an">Analytics</span></div>
-            <div class="d-sub">Dashboards</div>
+            <div class="d-name">Adversa <span class="an">Analytics</span></div><div class="d-sub">Dashboards</div>
           </a>
           <a class="s0-div d-product" href="https://psihotrot-tech.github.io/Adversa/#work" target="_blank">
             <div class="d-ico"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
-            <div class="d-name">Adversa <span class="pr">Product</span></div>
-            <div class="d-sub">SaaS</div>
+            <div class="d-name">Adversa <span class="pr">Product</span></div><div class="d-sub">SaaS</div>
           </a>
         </div>
         <div class="s0-rule"></div>
         <div class="s0-cta">
           <a class="btn-p" href="https://psihotrot-tech.github.io/Adversa/" target="_blank">Poseti sajt agencije <span class="btn-arr">→</span></a>
-          <a class="btn-s" href="tel:+381611050945">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 11.9 19.79 19.79 0 0 1 1.61 3.27 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 5.43 5.43l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 15.5v1.42z"/></svg>
-            Pozovi <span class="btn-arr">→</span>
-          </a>
-          <a class="btn-s" id="vcardBtn0" href="#">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-            Sačuvaj kontakt <span class="btn-arr">↓</span>
-          </a>
+          <a class="btn-s" href="tel:+381611050945">Pozovi +381 61 105 0945 <span class="btn-arr">→</span></a>
+          <a class="btn-s" id="vcardBtn" href="#">Sačuvaj kontakt <span class="btn-arr">↓</span></a>
         </div>
         <div class="s0-contact">
           <div class="s0-ci"><div class="s0-cl">Email</div><a class="s0-cv" href="mailto:psihotrot@gmail.com">psihotrot@gmail.com</a></div>
@@ -510,473 +569,446 @@ html,body{min-height:100%;background:#0a0a0f;font-family:'Space Grotesk',sans-se
     <!-- ══ SCREEN 1: RESTORAN ══ -->
     <div class="screen s1" id="screen-1">
       <div class="s1-hero">
-        <div class="s1-hero-pattern"></div>
-        <div class="s1-hero-emoji">🍝</div>
-        <div class="s1-topbar2">
+        <div class="s1-topbar">
           <div>
             <div class="s1-logo">Zlatna Viljuška</div>
-            <div class="s1-logo-sub">Restaurant · Beograd</div>
+            <div class="s1-logo-sub">Fine Dining · Beograd · Od 1998.</div>
           </div>
-          <div class="s1-open">● OTVORENO</div>
+          <div class="s1-status">Otvoreno</div>
         </div>
-        <div class="s1-tagline">Ukus koji se<br><em>pamti.</em></div>
-        <div class="s1-sub2">Mediteranska kuhinja · Od 1998.</div>
+        <div class="s1-tagline">Mediteranska<br>kuhinja koja <em>ostaje.</em></div>
+        <div class="s1-desc">Sezonski sastojci, vino iz naše karte, ambijent koji pamtite.</div>
       </div>
-      <div class="s1-body">
-        <div class="s1-actions">
-          <a class="s1-action primary" href="tel:+381112345678">
-            <div class="s1-action-icon">📞</div>
-            <div class="s1-action-label">Pozovi</div>
-          </a>
-          <a class="s1-action" href="#">
-            <div class="s1-action-icon">🗺</div>
-            <div class="s1-action-label">Lokacija</div>
-          </a>
-          <a class="s1-action" href="#">
-            <div class="s1-action-icon">⭐</div>
-            <div class="s1-action-label">Recenzije</div>
-          </a>
-        </div>
 
-        <div class="s1-sec">Jelovnik</div>
-        <div class="s1-menu-tabs">
-          <button class="m-tab active" onclick="switchMenu(this,'pasta')">Pasta</button>
-          <button class="m-tab" onclick="switchMenu(this,'riba')">Riba</button>
-          <button class="m-tab" onclick="switchMenu(this,'dezert')">Dezert</button>
-          <button class="m-tab" onclick="switchMenu(this,'pica')">Pica</button>
-        </div>
-        <div class="s1-menu-items" id="menu-items">
-          <div class="s1-mi">
-            <div class="s1-mi-left">
-              <div class="s1-mi-emoji">🍝</div>
-              <div><div class="s1-mi-name">Karbonara</div><div class="s1-mi-desc">Pančeta, jaje, pecorino</div></div>
-            </div>
-            <div class="s1-mi-price">1.200 din</div>
-          </div>
-          <div class="s1-mi">
-            <div class="s1-mi-left">
-              <div class="s1-mi-emoji">🍜</div>
-              <div><div class="s1-mi-name">Tagliatelle tartufo</div><div class="s1-mi-desc">Crni tartuf, maslac, parmezan</div></div>
-            </div>
-            <div class="s1-mi-price">1.800 din</div>
-          </div>
-          <div class="s1-mi">
-            <div class="s1-mi-left">
-              <div class="s1-mi-emoji">🫙</div>
-              <div><div class="s1-mi-name">Pesto rigatoni</div><div class="s1-mi-desc">Bosiljak, borovi orasi, cherry</div></div>
-            </div>
-            <div class="s1-mi-price">1.100 din</div>
-          </div>
-        </div>
+      <!-- nav -->
+      <div class="s1-nav">
+        <div class="s1-nav-item active" onclick="s1Nav(this,'menu')">Jelovnik</div>
+        <div class="s1-nav-item" onclick="s1Nav(this,'rezerv')">Rezervacija</div>
+        <div class="s1-nav-item" onclick="s1Nav(this,'info')">Informacije</div>
+      </div>
 
-        <div class="s1-sec">Rezerviši sto</div>
-        <div class="s1-rezerv">
-          <div class="s1-rezerv-title">Rezervacija</div>
-          <div class="s1-rezerv-sub">Popunite formu ili nas pozovite</div>
+      <!-- menu panel -->
+      <div id="s1-panel-menu">
+        <div class="s1-menu-section">
+          <div class="s1-section-title">Predjela</div>
+          <div class="s1-items">
+            <div class="s1-item">
+              <div><div class="s1-item-name">Tatar od tune sa avokado kremom</div><div class="s1-item-desc">Wasabi majonez, kapar, crni sezam, ponzu</div></div>
+              <div class="s1-item-price">1.650 din</div>
+            </div>
+            <div class="s1-item">
+              <div><div class="s1-item-name">Burrata sa heirloom paradajzom</div><div class="s1-item-desc">Sicilijansko maslinovo ulje, bosiljak, fleur de sel</div></div>
+              <div class="s1-item-price">1.350 din</div>
+            </div>
+            <div class="s1-item">
+              <div><div class="s1-item-name">Carpaccio od govedinih fileta</div><div class="s1-item-desc">Parmezan, rukola, kapar, limonski dressing</div></div>
+              <div class="s1-item-price">1.800 din</div>
+            </div>
+          </div>
+          <div class="s1-section-title" style="margin-top:24px">Glavna jela</div>
+          <div class="s1-items">
+            <div class="s1-item">
+              <div><div class="s1-item-name">Brancin u kori od soli</div><div class="s1-item-desc">Gremolata, pečeni krompir, limun</div></div>
+              <div class="s1-item-price">3.200 din</div>
+            </div>
+            <div class="s1-item">
+              <div><div class="s1-item-name">Tagliata od junećeg roastbeef-a</div><div class="s1-item-desc">Rukola, parmezan, balzamiko redukcija</div></div>
+              <div class="s1-item-price">3.800 din</div>
+            </div>
+            <div class="s1-item">
+              <div><div class="s1-item-name">Risotto al nero di seppia</div><div class="s1-item-desc">Lignje, škampi, bottarga, belo vino</div></div>
+              <div class="s1-item-price">2.600 din</div>
+            </div>
+          </div>
+        </div>
+        <div style="height:28px"></div>
+        <div class="s1-contact">
+          <a class="s1-contact-btn s1-cb-primary" href="tel:+381112345678">Pozovite nas</a>
+          <a class="s1-contact-btn s1-cb-secondary" href="#">Kompletan meni</a>
+        </div>
+      </div>
+
+      <!-- rezervacija panel -->
+      <div id="s1-panel-rezerv" style="display:none">
+        <div class="s1-rezerv-section">
+          <div class="s1-rezerv-title">Rezervacija stola</div>
+          <div class="s1-rezerv-sub">Za grupe od 8+ osoba pozovite nas direktno</div>
           <div class="s1-input-row">
-            <input class="s1-input" placeholder="Datum" type="date">
-            <input class="s1-input" placeholder="Vreme" type="time">
+            <div class="s1-field">
+              <label class="s1-label">Datum</label>
+              <input class="s1-input" type="date">
+            </div>
+            <div class="s1-field">
+              <label class="s1-label">Vreme</label>
+              <input class="s1-input" type="time" value="20:00">
+            </div>
           </div>
           <div class="s1-input-row">
-            <input class="s1-input" placeholder="Ime i prezime">
-            <input class="s1-input" placeholder="Br. gostiju" type="number" min="1" max="20">
+            <div class="s1-field">
+              <label class="s1-label">Ime i prezime</label>
+              <input class="s1-input" placeholder="Vaše ime">
+            </div>
+            <div class="s1-field">
+              <label class="s1-label">Broj gostiju</label>
+              <input class="s1-input" type="number" min="1" max="20" placeholder="2">
+            </div>
           </div>
-          <button class="s1-btn-full">Rezerviši sto →</button>
+          <div class="s1-field">
+            <label class="s1-label">Telefon</label>
+            <input class="s1-input" placeholder="+381 ...">
+          </div>
+          <div class="s1-field">
+            <label class="s1-label">Napomena (opciono)</label>
+            <input class="s1-input" placeholder="Alergije, posebne želje...">
+          </div>
+          <button class="s1-btn">Potvrdite rezervaciju</button>
         </div>
+      </div>
 
-        <div class="s1-sec">Informacije</div>
-        <div class="s1-info">
-          <div class="s1-info-card">
-            <div class="s1-info-label">Radno vreme</div>
-            <div class="s1-info-val">12:00 – 23:00</div>
-          </div>
-          <div class="s1-info-card">
-            <div class="s1-info-label">Adresa</div>
-            <div class="s1-info-val">Knez Mihailova 14</div>
-          </div>
-          <div class="s1-info-card">
-            <div class="s1-info-label">WiFi</div>
-            <div class="s1-info-val">ZlatnaViljuska</div>
-          </div>
-          <div class="s1-info-card">
-            <div class="s1-info-label">Parking</div>
-            <div class="s1-info-val">Besplatan</div>
-          </div>
+      <!-- info panel -->
+      <div id="s1-panel-info" style="display:none">
+        <div style="padding:24px 24px 20px">
+          <div class="s1-section-title">Informacije o restoranu</div>
         </div>
+        <div class="s1-info-section">
+          <div class="s1-info-block"><div class="s1-info-label">Radno vreme</div><div class="s1-info-val">Pon–Sub 12–23h<br>Ned 13–22h</div></div>
+          <div class="s1-info-block"><div class="s1-info-label">Adresa</div><div class="s1-info-val">Knez Mihailova 14<br>Beograd</div></div>
+          <div class="s1-info-block"><div class="s1-info-label">Parking</div><div class="s1-info-val">Besplatan parking<br>za goste</div></div>
+          <div class="s1-info-block"><div class="s1-info-label">Plaćanje</div><div class="s1-info-val">Kartice, gotovina<br>Voucher</div></div>
+        </div>
+        <div class="s1-contact" style="margin-top:20px">
+          <a class="s1-contact-btn s1-cb-primary" href="tel:+381112345678">+381 11 234 5678</a>
+          <a class="s1-contact-btn s1-cb-secondary" href="mailto:rezervacije@zlatnaviljuska.rs">Email</a>
+        </div>
+        <div style="height:32px"></div>
       </div>
     </div>
 
     <!-- ══ SCREEN 2: FRIZERSKI SALON ══ -->
     <div class="screen s2" id="screen-2">
       <div class="s2-hero">
-        <div class="s2-scissors">✂</div>
-        <div class="s2-topbar3">
+        <div class="s2-lines"></div>
+        <div class="s2-topbar">
           <div>
-            <div class="s2-logo">STUDIO <span>NOIR</span></div>
+            <div class="s2-logo">ATELIER NOIR</div>
+            <div class="s2-logo-tagline">Hair Studio · Beograd</div>
           </div>
-          <div style="font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.4)">Beograd · Vracar</div>
+          <div class="s2-since">EST. 2015</div>
         </div>
-        <div class="s2-tagline2">Stil koji<br>govori <em>za tebe.</em></div>
-        <div class="s2-sub3">Premium hair studio · Od 2015.</div>
+        <div class="s2-tagline">Svaki rez.<br>Svaki <em>detalj.</em></div>
+        <div class="s2-sub">Premium frizerski studio · Vračar</div>
       </div>
-      <div class="s2-body">
-        <a class="s2-book" href="#">
-          <div class="s2-book-text">
-            <strong>Zakaži termin</strong>
-            <span>Slobodni termini danas →</span>
-          </div>
-          <div class="s2-book-arrow">→</div>
-        </a>
 
-        <div class="s2-sec">Usluge i cene</div>
+      <a class="s2-book" href="#">
+        <div>
+          <div class="s2-book-label">Slobodni termini dostupni</div>
+          <div class="s2-book-text">Zakažite termin</div>
+        </div>
+        <div class="s2-book-arrow">→</div>
+      </a>
+
+      <div class="s2-section">
+        <div class="s2-section-eyebrow">Usluge</div>
         <div class="s2-services">
           <div class="s2-svc">
-            <div class="s2-svc-left">
-              <div class="s2-svc-dot" style="background:#a855f7"></div>
-              <div><div class="s2-svc-name">Šišanje + styling</div><div class="s2-svc-dur">45 min</div></div>
-            </div>
-            <div class="s2-svc-price">2.500 din</div>
+            <div><div class="s2-svc-name">Šišanje i styling</div><div class="s2-svc-dur">45 min</div></div>
+            <div class="s2-svc-right"><div class="s2-svc-price">3.500 din</div><div class="s2-svc-book">Zakaži →</div></div>
           </div>
           <div class="s2-svc">
-            <div class="s2-svc-left">
-              <div class="s2-svc-dot" style="background:#7c3aed"></div>
-              <div><div class="s2-svc-name">Boja kose</div><div class="s2-svc-dur">90 min</div></div>
-            </div>
-            <div class="s2-svc-price">5.500 din</div>
+            <div><div class="s2-svc-name">Korekcija boje</div><div class="s2-svc-dur">90–120 min</div></div>
+            <div class="s2-svc-right"><div class="s2-svc-price">od 6.500 din</div><div class="s2-svc-book">Zakaži →</div></div>
           </div>
           <div class="s2-svc">
-            <div class="s2-svc-left">
-              <div class="s2-svc-dot" style="background:#c084fc"></div>
-              <div><div class="s2-svc-name">Balayage</div><div class="s2-svc-dur">120 min</div></div>
-            </div>
-            <div class="s2-svc-price">8.500 din</div>
+            <div><div class="s2-svc-name">Balayage / Ombre</div><div class="s2-svc-dur">150–180 min</div></div>
+            <div class="s2-svc-right"><div class="s2-svc-price">od 9.800 din</div><div class="s2-svc-book">Zakaži →</div></div>
           </div>
           <div class="s2-svc">
-            <div class="s2-svc-left">
-              <div class="s2-svc-dot" style="background:#9333ea"></div>
-              <div><div class="s2-svc-name">Keratin tretman</div><div class="s2-svc-dur">180 min</div></div>
-            </div>
-            <div class="s2-svc-price">12.000 din</div>
+            <div><div class="s2-svc-name">Keratin tretman</div><div class="s2-svc-dur">180 min</div></div>
+            <div class="s2-svc-right"><div class="s2-svc-price">od 14.000 din</div><div class="s2-svc-book">Zakaži →</div></div>
           </div>
           <div class="s2-svc">
-            <div class="s2-svc-left">
-              <div class="s2-svc-dot" style="background:#6d28d9"></div>
-              <div><div class="s2-svc-name">Pranje + feniranje</div><div class="s2-svc-dur">30 min</div></div>
-            </div>
-            <div class="s2-svc-price">1.800 din</div>
+            <div><div class="s2-svc-name">Pranje i feniranje</div><div class="s2-svc-dur">30 min</div></div>
+            <div class="s2-svc-right"><div class="s2-svc-price">2.200 din</div><div class="s2-svc-book">Zakaži →</div></div>
           </div>
         </div>
 
-        <div class="s2-sec">Naš tim</div>
+        <div class="s2-section-eyebrow">Naši radovi</div>
+        <div class="s2-gallery" style="margin-bottom:28px">
+          <div class="s2-gal s2-g1"><div class="s2-gal-label">Natural</div></div>
+          <div class="s2-gal s2-g2"><div class="s2-gal-label">Copper</div></div>
+          <div class="s2-gal s2-g3"><div class="s2-gal-label">Brunette</div></div>
+          <div class="s2-gal s2-g4"><div class="s2-gal-label">Ash</div></div>
+          <div class="s2-gal s2-g5"><div class="s2-gal-label">Platinum</div></div>
+          <div class="s2-gal s2-g6"><div class="s2-gal-label">Burgundy</div></div>
+        </div>
+
+        <div class="s2-section-eyebrow">Tim</div>
         <div class="s2-team">
           <div class="s2-member">
-            <div class="s2-avatar" style="background:linear-gradient(135deg,#a855f7,#7c3aed)">👩</div>
+            <div class="s2-avatar">AM</div>
             <div>
               <div class="s2-member-name">Ana Milović</div>
-              <div class="s2-member-role">Senior Stylist · 12 god. iskustva</div>
+              <div class="s2-member-role">Senior Stylist · 12 god.</div>
             </div>
-            <div class="s2-member-avail avail-yes">Slobodna</div>
+            <div class="s2-avail av-yes">Slobodna</div>
           </div>
           <div class="s2-member">
-            <div class="s2-avatar" style="background:linear-gradient(135deg,#7c3aed,#6d28d9)">👨</div>
+            <div class="s2-avatar">MJ</div>
             <div>
               <div class="s2-member-name">Marko Jović</div>
-              <div class="s2-member-role">Colorist · 8 god. iskustva</div>
+              <div class="s2-member-role">Colorist · 8 god.</div>
             </div>
-            <div class="s2-member-avail avail-no">Zauzet</div>
+            <div class="s2-avail av-no">Zauzet</div>
           </div>
           <div class="s2-member">
-            <div class="s2-avatar" style="background:linear-gradient(135deg,#c084fc,#a855f7)">👩</div>
+            <div class="s2-avatar">JP</div>
             <div>
               <div class="s2-member-name">Jelena Petrović</div>
-              <div class="s2-member-role">Barber · 5 god. iskustva</div>
+              <div class="s2-member-role">Hair Artist · 6 god.</div>
             </div>
-            <div class="s2-member-avail avail-yes">Slobodna</div>
+            <div class="s2-avail av-yes">Slobodna</div>
           </div>
         </div>
       </div>
+
+      <div class="s2-info">
+        <div class="s2-info-card"><div class="s2-info-label">Radno vreme</div><div class="s2-info-val">Uto–Sub 10–20h</div></div>
+        <div class="s2-info-card"><div class="s2-info-label">Adresa</div><div class="s2-info-val">Dimitrija Tucovića 62</div></div>
+        <div class="s2-info-card"><div class="s2-info-label">Telefon</div><div class="s2-info-val">+381 11 345 6789</div></div>
+        <div class="s2-info-card"><div class="s2-info-label">Instagram</div><div class="s2-info-val">@ateliernoir.bg</div></div>
+      </div>
+      <div style="height:8px"></div>
     </div>
 
     <!-- ══ SCREEN 3: STOMATOLOG ══ -->
     <div class="screen s3" id="screen-3">
       <div class="s3-hero">
-        <div class="s3-cross">🦷</div>
-        <div class="s3-topbar4">
+        <div class="s3-topbar">
           <div>
-            <div class="s3-logo2">Dr. Marković <span>Stomatolog</span></div>
+            <div class="s3-logo">Dr. Marković <span>Stomatolog</span></div>
           </div>
-          <div class="s3-cert">ISO · Spec.</div>
+          <div class="s3-cert">Specijalista · 20 god.</div>
         </div>
-        <div class="s3-tagline3">Osmeh koji<br>menjate <em>zauvek.</em></div>
-        <div class="s3-sub4">Estetska i implantološka stomatologija · Novi Sad</div>
+        <div class="s3-tagline">Osmeh koji<br>traje <em>decenijama.</em></div>
+        <div class="s3-desc">Estetska i implantološka stomatologija · Novi Sad · ISO 9001</div>
       </div>
-      <div class="s3-body">
-        <a class="s3-hitna" href="tel:+3816300123">
-          <div class="s3-hitna-left">
-            <strong>Hitna stomatološka pomoć</strong>
-            <span>Dostupni 24/7 · Pozovite odmah</span>
-          </div>
-          <div class="s3-hitna-icon">🚨</div>
-        </a>
 
-        <div class="s3-zakazi">
-          <div class="s3-zakazi-title">Zakažite pregled</div>
-          <div class="s3-zakazi-sub">Besplatan prvi pregled</div>
-          <div class="s3-service-sel">
-            <div class="s3-sel active">
-              <span class="s3-sel-icon">🔍</span>
-              <div class="s3-sel-name">Pregled</div>
-            </div>
-            <div class="s3-sel">
-              <span class="s3-sel-icon">🦷</span>
-              <div class="s3-sel-name">Implant</div>
-            </div>
-            <div class="s3-sel">
-              <span class="s3-sel-icon">✨</span>
-              <div class="s3-sel-name">Beljenje</div>
-            </div>
-            <div class="s3-sel">
-              <span class="s3-sel-icon">😁</span>
-              <div class="s3-sel-name">Ortodoncija</div>
-            </div>
-          </div>
-          <input class="s3-input2" placeholder="Vaše ime i broj telefona">
-          <input class="s3-input2" placeholder="Željeni termin (datum i vreme)">
-          <button class="s3-btn-blue">Zakažite pregled →</button>
+      <a class="s3-hitna" href="tel:+38163001234">
+        <div class="s3-hitna-text">
+          <strong>Hitna stomatološka pomoć</strong>
+          <span>Dostupno 0–24 · Pozovite odmah</span>
         </div>
+        <div class="s3-hitna-badge">HITNO</div>
+      </a>
 
-        <div class="s3-sec">Usluge</div>
-        <div class="s3-services">
-          <div class="s3-svc2">
-            <span class="s3-svc2-icon">🦷</span>
-            <div class="s3-svc2-name">Dentalni implanti</div>
-            <div class="s3-svc2-price">od 85.000 din</div>
+      <div class="s3-book-section">
+        <div class="s3-book-title">Zakažite pregled</div>
+        <div class="s3-book-sub">Besplatan inicialni pregled i plan terapije</div>
+
+        <div class="s3-services-sel">
+          <div class="s3-sel active" onclick="s3Sel(this)">
+            <span class="s3-sel-name">Pregled i dijagnostika</span>
+            <span class="s3-sel-price">Besplatno</span>
           </div>
-          <div class="s3-svc2">
-            <span class="s3-svc2-icon">✨</span>
-            <div class="s3-svc2-name">Beljenje zuba</div>
-            <div class="s3-svc2-price">od 18.000 din</div>
+          <div class="s3-sel" onclick="s3Sel(this)">
+            <span class="s3-sel-name">Dentalni implant</span>
+            <span class="s3-sel-price">od 85.000 din</span>
           </div>
-          <div class="s3-svc2">
-            <span class="s3-svc2-icon">😁</span>
-            <div class="s3-svc2-name">Ortodoncija</div>
-            <div class="s3-svc2-price">od 45.000 din</div>
+          <div class="s3-sel" onclick="s3Sel(this)">
+            <span class="s3-sel-name">Estetsko beljenje</span>
+            <span class="s3-sel-price">od 18.000 din</span>
           </div>
-          <div class="s3-svc2">
-            <span class="s3-svc2-icon">💎</span>
-            <div class="s3-svc2-name">Keramičke krunice</div>
-            <div class="s3-svc2-price">od 32.000 din</div>
-          </div>
-          <div class="s3-svc2">
-            <span class="s3-svc2-icon">🔬</span>
-            <div class="s3-svc2-name">RTG dijagnostika</div>
-            <div class="s3-svc2-price">od 2.500 din</div>
-          </div>
-          <div class="s3-svc2">
-            <span class="s3-svc2-icon">🛡</span>
-            <div class="s3-svc2-name">Zaštita desni</div>
-            <div class="s3-svc2-price">od 5.000 din</div>
+          <div class="s3-sel" onclick="s3Sel(this)">
+            <span class="s3-sel-name">Ortodoncija</span>
+            <span class="s3-sel-price">od 45.000 din</span>
           </div>
         </div>
 
-        <div class="s3-sec">Tim lekara</div>
-        <div class="s3-team">
+        <div class="s3-input-row">
+          <div class="s3-field">
+            <label class="s3-label">Ime i prezime</label>
+            <input class="s3-input" placeholder="Vaše ime">
+          </div>
+          <div class="s3-field">
+            <label class="s3-label">Telefon</label>
+            <input class="s3-input" placeholder="+381 ...">
+          </div>
+        </div>
+        <div class="s3-field">
+          <label class="s3-label">Željeni termin</label>
+          <input class="s3-input" placeholder="npr. Utorak posle 16h">
+        </div>
+        <button class="s3-btn">Zakažite pregled</button>
+      </div>
+
+      <div class="s3-services-section">
+        <div class="s3-eyebrow">Usluge i cene</div>
+        <div class="s3-svcs">
+          <div class="s3-svc">
+            <div><div class="s3-svc-name">Dentalni implanti</div><div class="s3-svc-note">Nobel Biocare, 10 god. garancija</div></div>
+            <div class="s3-svc-price">od 85.000 din</div>
+          </div>
+          <div class="s3-svc">
+            <div><div class="s3-svc-name">Keramičke krunice i ljuspice</div><div class="s3-svc-note">Estetska restauracija</div></div>
+            <div class="s3-svc-price">od 32.000 din</div>
+          </div>
+          <div class="s3-svc">
+            <div><div class="s3-svc-name">Ortodoncija — fiksni aparat</div><div class="s3-svc-note">Metal ili keramika</div></div>
+            <div class="s3-svc-price">od 45.000 din</div>
+          </div>
+          <div class="s3-svc">
+            <div><div class="s3-svc-name">Profesionalno beljenje zuba</div><div class="s3-svc-note">Zoom tehnologija</div></div>
+            <div class="s3-svc-price">od 18.000 din</div>
+          </div>
+          <div class="s3-svc">
+            <div><div class="s3-svc-name">3D RTG dijagnostika (CBCT)</div><div class="s3-svc-note">Digitalni ortopan</div></div>
+            <div class="s3-svc-price">od 3.500 din</div>
+          </div>
+          <div class="s3-svc">
+            <div><div class="s3-svc-name">Parodontološka terapija</div><div class="s3-svc-note">Dubinsko čišćenje desni</div></div>
+            <div class="s3-svc-price">od 6.500 din</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="s3-team-section">
+        <div class="s3-eyebrow">Tim lekara</div>
+        <div class="s3-doctors">
           <div class="s3-doc">
-            <span class="s3-doc-avatar">👨‍⚕️</span>
+            <div class="s3-doc-initials">IM</div>
             <div class="s3-doc-name">Dr. Igor Marković</div>
-            <div class="s3-doc-spec">Implantolog · 20 god.</div>
+            <div class="s3-doc-spec">Spec. oralna hirurgija<br>Implantologija · 20 god.</div>
             <div class="s3-doc-avail">Slobodan</div>
           </div>
           <div class="s3-doc">
-            <span class="s3-doc-avatar">👩‍⚕️</span>
+            <div class="s3-doc-initials">NL</div>
             <div class="s3-doc-name">Dr. Nina Lazić</div>
-            <div class="s3-doc-spec">Ortodont · 12 god.</div>
+            <div class="s3-doc-spec">Spec. ortodoncija<br>Estetska stomatol. · 12 god.</div>
             <div class="s3-doc-avail">Slobodna</div>
           </div>
         </div>
-
-        <div style="height:20px"></div>
-        <div class="s3-sec">Ordinacija</div>
-        <div class="s3-info">
-          <div class="s3-info-card2">
-            <div class="s3-info-label2">Radno vreme</div>
-            <div class="s3-info-val2">08:00 – 20:00</div>
-          </div>
-          <div class="s3-info-card2">
-            <div class="s3-info-label2">Adresa</div>
-            <div class="s3-info-val2">Zmaj Jovina 7, NS</div>
-          </div>
-          <div class="s3-info-card2">
-            <div class="s3-info-label2">Parking</div>
-            <div class="s3-info-val2">Besplatan</div>
-          </div>
-          <div class="s3-info-card2">
-            <div class="s3-info-label2">Plaćanje</div>
-            <div class="s3-info-val2">Rate · Kartice</div>
-          </div>
-        </div>
-        <div style="height:32px"></div>
       </div>
+
+      <div class="s3-info">
+        <div class="s3-info-block"><div class="s3-info-label">Radno vreme</div><div class="s3-info-val">Pon–Pet 08–20h<br>Sub 09–15h</div></div>
+        <div class="s3-info-block"><div class="s3-info-label">Adresa</div><div class="s3-info-val">Zmaj Jovina 7<br>Novi Sad</div></div>
+        <div class="s3-info-block"><div class="s3-info-label">Plaćanje</div><div class="s3-info-val">Rate do 24 mes.<br>Sve kartice</div></div>
+        <div class="s3-info-block"><div class="s3-info-label">Parking</div><div class="s3-info-val">Besplatan za<br>pacijente</div></div>
+      </div>
+      <div style="height:32px"></div>
     </div>
 
-  </div><!-- /phone-frame -->
+  </div><!-- /content -->
 
-  <div class="demo-footer">
-    <p>Adversa Agency · psihotrot@gmail.com · +381 61 105 0945</p>
-  </div>
+  <div class="demo-footer">ADVERSA AGENCY · psihotrot@gmail.com · +381 61 105 0945</div>
 
 </div>
 
 <script>
-/* ══ TAB SWITCHING ══ */
+/* ══ TAB ══ */
 function switchTab(n){
   document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',i===n));
   document.querySelectorAll('.screen').forEach((s,i)=>s.classList.toggle('active',i===n));
   if(n===0 && !canvasStarted) startCanvas();
 }
 
-/* ══ MENU SWITCHING ══ */
-const menus = {
-  pasta:[
-    {e:'🍝',n:'Karbonara',d:'Pančeta, jaje, pecorino',p:'1.200 din'},
-    {e:'🍜',n:'Tagliatelle tartufo',d:'Crni tartuf, maslac, parmezan',p:'1.800 din'},
-    {e:'🫙',n:'Pesto rigatoni',d:'Bosiljak, borovi orasi, cherry',p:'1.100 din'},
-  ],
-  riba:[
-    {e:'🐟',n:'Brancin na žaru',d:'Mediteransko povrće, limun',p:'2.200 din'},
-    {e:'🦐',n:'Gamberi aglio e olio',d:'Beli luk, peperoncino, persun',p:'1.900 din'},
-    {e:'🐙',n:'Lignje na maslinovom ulju',d:'Kapar, beli luk, peršun',p:'1.600 din'},
-  ],
-  dezert:[
-    {e:'🍮',n:'Tiramisu',d:'Mascarpone, espresso, kakao',p:'700 din'},
-    {e:'🍫',n:'Fondant al cioccolato',d:'Toplo čokoladno srce, sladoled',p:'850 din'},
-    {e:'🍓',n:'Panna cotta',d:'Jagoda, vanila, menta',p:'650 din'},
-  ],
-  pica:[
-    {e:'🍕',n:'Margherita DOP',d:'San Marzano, fior di latte',p:'1.300 din'},
-    {e:'🍕',n:'Diavola',d:'Pikantna salama, mozzarella',p:'1.500 din'},
-    {e:'🍕',n:'Quattro formaggi',d:'4 vrste sira, orah',p:'1.600 din'},
-  ],
-};
-function switchMenu(btn, cat){
-  document.querySelectorAll('.m-tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  const items = menus[cat];
-  document.getElementById('menu-items').innerHTML = items.map(i=>`
-    <div class="s1-mi">
-      <div class="s1-mi-left">
-        <div class="s1-mi-emoji">${i.e}</div>
-        <div><div class="s1-mi-name">${i.n}</div><div class="s1-mi-desc">${i.d}</div></div>
-      </div>
-      <div class="s1-mi-price">${i.p}</div>
-    </div>`).join('');
+/* ══ RESTORAN NAV ══ */
+function s1Nav(el, panel){
+  document.querySelectorAll('.s1-nav-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  ['menu','rezerv','info'].forEach(p=>{
+    document.getElementById('s1-panel-'+p).style.display = p===panel ? 'block' : 'none';
+  });
 }
 
-/* ══ SERVICE SELECTOR (stomatolog) ══ */
-document.querySelectorAll('.s3-sel').forEach(el=>{
-  el.addEventListener('click',()=>{
-    document.querySelectorAll('.s3-sel').forEach(s=>s.classList.remove('active'));
-    el.classList.add('active');
-  });
-});
+/* ══ STOMATOLOG SELECTOR ══ */
+function s3Sel(el){
+  document.querySelectorAll('.s3-sel').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+}
 
 /* ══ vCARD ══ */
 const vcard=['BEGIN:VCARD','VERSION:3.0','FN:Sava Pivnički','N:Pivnički;Sava;;;','ORG:Adversa Agency','TITLE:Founder','TEL;TYPE=CELL:+381611050945','EMAIL:psihotrot@gmail.com','URL:https://psihotrot-tech.github.io/Adversa/','ADR;TYPE=WORK:;;Subotica;Vojvodina;;Serbia','END:VCARD'].join('\r\n');
 const vcBlob=new Blob([vcard],{type:'text/vcard'});
 const vcUrl=URL.createObjectURL(vcBlob);
-document.getElementById('vcardBtn0').href=vcUrl;
-document.getElementById('vcardBtn0').download='Sava_Pivnicki_Adversa.vcf';
+const vcBtn=document.getElementById('vcardBtn');
+vcBtn.href=vcUrl;vcBtn.download='Sava_Pivnicki_Adversa.vcf';
 
 /* ══ 3D CANVAS ══ */
-let canvasStarted = false;
-
+let canvasStarted=false;
 function startCanvas(){
-  canvasStarted = true;
-  const canvas = document.getElementById('adversaCanvas');
-  const ctx = canvas.getContext('2d');
-
+  canvasStarted=true;
+  const canvas=document.getElementById('adversaCanvas');
+  const ctx=canvas.getContext('2d');
+  let W,H;
   function resize(){
-    const w = Math.min(canvas.parentElement.offsetWidth, 370);
-    canvas.width  = w * devicePixelRatio;
-    canvas.height = 260 * devicePixelRatio;
-    canvas.style.width  = w + 'px';
-    canvas.style.height = '260px';
-    ctx.scale(devicePixelRatio, devicePixelRatio);
-    W = w; H = 260;
+    const w=Math.min(canvas.parentElement.offsetWidth,480);
+    canvas.width=w*devicePixelRatio;canvas.height=260*devicePixelRatio;
+    canvas.style.width=w+'px';canvas.style.height='260px';
+    ctx.scale(devicePixelRatio,devicePixelRatio);W=w;H=260;
   }
-  let W, H;
   resize();
-  window.addEventListener('resize', ()=>{ ctx.setTransform(1,0,0,1,0,0); resize(); });
+  window.addEventListener('resize',()=>{ctx.setTransform(1,0,0,1,0,0);resize();});
 
-  const PALETTE = ['#2563eb','#7c3aed','#0d9488','#ea580c'];
-  let rotX=.18,rotY=0,velX=0,velY=0,dragging=false,lastX=0,lastY=0;
-  const RADIUS=70,TRAIL_COUNT=8,trailFrames=[];
-
-  const PART_N=22;
-  const particles=Array.from({length:PART_N},(_,i)=>({
-    angle:(i/PART_N)*Math.PI*2,
-    r:RADIUS+22+Math.random()*30,
-    y:(Math.random()-.5)*50,
-    vy:(Math.random()-.5)*.14,
-    speed:.003+Math.random()*.006,
-    size:1.2+Math.random()*2,
-    color:PALETTE[i%4],
-    opacity:.3+Math.random()*.5
+  const PAL=['#2563eb','#7c3aed','#0d9488','#ea580c'];
+  let rX=.18,rY=0,vX=0,vY=0,drag=false,lX=0,lY=0;
+  const R=90,TC=8,TF=[];
+  const PN=28,pts=Array.from({length:PN},(_,i)=>({
+    angle:(i/PN)*Math.PI*2,r:R+30+Math.random()*40,
+    y:(Math.random()-.5)*60,vy:(Math.random()-.5)*.18,
+    speed:.003+Math.random()*.006,size:1.5+Math.random()*2.5,
+    color:PAL[Math.floor(Math.random()*4)],opacity:.3+Math.random()*.5
   }));
-
-  const RING_N=80,RING_R=RADIUS+14,FOV=280;
-  function project(x,y,z){const zz=z+FOV,s=FOV/zz;return{x:W/2+x*s,y:H/2+y*s,scale:s,z};}
-  function rotateY(x,z,a){return{x:x*Math.cos(a)-z*Math.sin(a),z:x*Math.sin(a)+z*Math.cos(a)};}
-  function rotateX(y,z,a){return{y:y*Math.cos(a)-z*Math.sin(a),z:y*Math.sin(a)+z*Math.cos(a)};}
-  function transform(px,py,pz){const ry=rotateY(px,pz,rotY),rx=rotateX(py,ry.z,rotX);return project(ry.x,rx.y,rx.z);}
+  const RN=80,RR=R+18,FOV=340;
+  function proj(x,y,z){const zz=z+FOV,s=FOV/zz;return{x:W/2+x*s,y:H/2+y*s,scale:s,z};}
+  function rY3(x,z,a){return{x:x*Math.cos(a)-z*Math.sin(a),z:x*Math.sin(a)+z*Math.cos(a)};}
+  function rX3(y,z,a){return{y:y*Math.cos(a)-z*Math.sin(a),z:y*Math.sin(a)+z*Math.cos(a)};}
+  function tf(px,py,pz){const ry=rY3(px,pz,rY),rx=rX3(py,ry.z,rX);return proj(ry.x,rx.y,rx.z);}
 
   const OFF=document.createElement('canvas');OFF.width=600;OFF.height=80;
   const oc=OFF.getContext('2d');
   oc.fillStyle='#fff';oc.font='700 52px "Space Grotesk",sans-serif';
   oc.letterSpacing='4px';oc.textBaseline='middle';oc.fillText('ADVERSA',10,40);
-  const TEXT_POINTS=[],imgData=oc.getImageData(0,0,600,80);
-  let minX=600,maxX=0,minY=80,maxY=0;
-  for(let y=0;y<80;y++)for(let x=0;x<600;x++){if(imgData.data[(y*600+x)*4+3]>128){if(x<minX)minX=x;if(x>maxX)maxX=x;if(y<minY)minY=y;if(y>maxY)maxY=y;}}
-  const TW=maxX-minX,TH=maxY-minY;
-  for(let y=minY;y<=maxY;y+=4){for(let x=minX;x<=maxX;x+=4){if(imgData.data[(y*600+x)*4+3]>100){const nx=(x-minX)/TW,ny=(y-minY)/TH,angle=(nx-.5)*Math.PI*1.35;TEXT_POINTS.push({x:RADIUS*Math.sin(angle),y:(ny-.5)*55,z:RADIUS*Math.cos(angle),color:PALETTE[Math.min(Math.floor(nx*4),3)],nx});}}}
+  const TP=[],id=oc.getImageData(0,0,600,80);
+  let x0=600,x1=0,y0=80,y1=0;
+  for(let y=0;y<80;y++)for(let x=0;x<600;x++){if(id.data[(y*600+x)*4+3]>128){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}}
+  const TW=x1-x0,TH=y1-y0;
+  for(let y=y0;y<=y1;y+=4)for(let x=x0;x<=x1;x+=4){if(id.data[(y*600+x)*4+3]>100){const nx=(x-x0)/TW,ny=(y-y0)/TH,a=(nx-.5)*Math.PI*1.35;TP.push({x:R*Math.sin(a),y:(ny-.5)*70,z:R*Math.cos(a),color:PAL[Math.min(Math.floor(nx*4),3)]});}}
 
   function drawRing(op){
-    ctx.beginPath();let first=true;
-    for(let i=0;i<=RING_N;i++){const a=(i/RING_N)*Math.PI*2,p=transform(RING_R*Math.sin(a),0,RING_R*Math.cos(a));if(first){ctx.moveTo(p.x,p.y);first=false;}else ctx.lineTo(p.x,p.y);}
+    ctx.beginPath();let f=true;
+    for(let i=0;i<=RN;i++){const a=(i/RN)*Math.PI*2,p=tf(RR*Math.sin(a),0,RR*Math.cos(a));if(f){ctx.moveTo(p.x,p.y);f=false;}else ctx.lineTo(p.x,p.y);}
     ctx.strokeStyle=`rgba(37,99,235,${op*.25})`;ctx.lineWidth=1;ctx.stroke();
-    const top=transform(0,0,RING_R);ctx.beginPath();ctx.arc(top.x,top.y,3,0,Math.PI*2);ctx.fillStyle=`rgba(37,99,235,${op*.7})`;ctx.fill();
+    const top=tf(0,0,RR);ctx.beginPath();ctx.arc(top.x,top.y,3,0,Math.PI*2);ctx.fillStyle=`rgba(37,99,235,${op*.7})`;ctx.fill();
   }
-  function drawParts(op){
-    for(const p of particles){const pt=transform(p.r*Math.sin(p.angle),p.y,p.r*Math.cos(p.angle));ctx.beginPath();ctx.arc(pt.x,pt.y,p.size*(pt.scale*.8),0,Math.PI*2);ctx.fillStyle=p.color+Math.round(p.opacity*op*255).toString(16).padStart(2,'0');ctx.fill();}
+  function drawPts(op){
+    for(const p of pts){const pt=tf(p.r*Math.sin(p.angle),p.y,p.r*Math.cos(p.angle));ctx.beginPath();ctx.arc(pt.x,pt.y,p.size*(pt.scale*.8),0,Math.PI*2);ctx.fillStyle=p.color+Math.round(p.opacity*op*255).toString(16).padStart(2,'0');ctx.fill();}
   }
-  function drawText(op){
-    const proj=TEXT_POINTS.map(p=>{const ry=rotateY(p.x,p.z,rotY),rx=rotateX(p.y,ry.z,rotX),pt=project(ry.x,rx.y,rx.z);return{pt,color:p.color};});
-    proj.sort((a,b)=>a.pt.z-b.pt.z);
-    for(const{pt,color}of proj){const depth=Math.max(0,Math.min(1,(pt.z+RADIUS*1.2)/(RADIUS*2.4)));ctx.beginPath();ctx.arc(pt.x,pt.y,Math.max(.7,pt.scale*2.2),0,Math.PI*2);ctx.fillStyle=color+Math.round(depth*op*255).toString(16).padStart(2,'0');ctx.fill();}
+  function drawTxt(op){
+    const pr=TP.map(p=>{const ry=rY3(p.x,p.z,rY),rx=rX3(p.y,ry.z,rX),pt=proj(ry.x,rx.y,rx.z);return{pt,color:p.color};});
+    pr.sort((a,b)=>a.pt.z-b.pt.z);
+    for(const{pt,color}of pr){const d=Math.max(0,Math.min(1,(pt.z+R*1.2)/(R*2.4)));ctx.beginPath();ctx.arc(pt.x,pt.y,Math.max(.8,pt.scale*2.2),0,Math.PI*2);ctx.fillStyle=color+Math.round(d*op*255).toString(16).padStart(2,'0');ctx.fill();}
   }
 
   let t=0;
   function frame(){
     ctx.clearRect(0,0,W,H);t+=.016;
-    if(!dragging){rotY+=velY;rotX+=velX;velY*=.98;velX*=.96;rotY+=.008;rotX=.18+Math.sin(t*.4)*.06;}
-    for(const p of particles){p.angle+=p.speed;p.y+=p.vy;if(Math.abs(p.y)>60)p.vy*=-1;}
-    trailFrames.push({ry:rotY,rx:rotX});if(trailFrames.length>TRAIL_COUNT*3)trailFrames.shift();
-    for(let i=0;i<TRAIL_COUNT;i++){const idx=trailFrames.length-1-i*3;if(idx<0)continue;const tf=trailFrames[idx];const s0=rotY,s1=rotX;rotY=tf.ry;rotX=tf.rx;drawText((TRAIL_COUNT-i)/TRAIL_COUNT*.18);rotY=s0;rotX=s1;}
-    drawRing(1);drawParts(1);drawText(1);
-    const cg=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,10);cg.addColorStop(0,'rgba(37,99,235,.5)');cg.addColorStop(1,'rgba(37,99,235,0)');ctx.beginPath();ctx.arc(W/2,H/2,10,0,Math.PI*2);ctx.fillStyle=cg;ctx.fill();
+    if(!drag){rY+=vY;rX+=vX;vY*=.98;vX*=.96;rY+=.008;rX=.18+Math.sin(t*.4)*.06;}
+    for(const p of pts){p.angle+=p.speed;p.y+=p.vy;if(Math.abs(p.y)>80)p.vy*=-1;}
+    TF.push({ry:rY,rx:rX});if(TF.length>TC*3)TF.shift();
+    for(let i=0;i<TC;i++){const idx=TF.length-1-i*3;if(idx<0)continue;const s=TF[idx],s0=rY,s1=rX;rY=s.ry;rX=s.rx;drawTxt((TC-i)/TC*.18);rY=s0;rX=s1;}
+    drawRing(1);drawPts(1);drawTxt(1);
+    const cg=ctx.createRadialGradient(W/2,H/2,0,W/2,H/2,12);cg.addColorStop(0,'rgba(37,99,235,.5)');cg.addColorStop(1,'rgba(37,99,235,0)');ctx.beginPath();ctx.arc(W/2,H/2,12,0,Math.PI*2);ctx.fillStyle=cg;ctx.fill();
     requestAnimationFrame(frame);
   }
   frame();
-
-  function getXY(e){return e.touches?{x:e.touches[0].clientX,y:e.touches[0].clientY}:{x:e.clientX,y:e.clientY};}
-  canvas.addEventListener('mousedown',e=>{dragging=true;const p=getXY(e);lastX=p.x;lastY=p.y;});
-  canvas.addEventListener('touchstart',e=>{dragging=true;const p=getXY(e);lastX=p.x;lastY=p.y;e.preventDefault();},{passive:false});
-  window.addEventListener('mousemove',e=>{if(!dragging)return;const p=getXY(e);velY+=(p.x-lastX)*.006;velX+=(p.y-lastY)*.004;lastX=p.x;lastY=p.y;});
-  window.addEventListener('touchmove',e=>{if(!dragging)return;const p=getXY(e);velY+=(p.x-lastX)*.006;velX+=(p.y-lastY)*.004;lastX=p.x;lastY=p.y;e.preventDefault();},{passive:false});
-  window.addEventListener('mouseup',()=>dragging=false);
-  window.addEventListener('touchend',()=>dragging=false);
+  function gxy(e){return e.touches?{x:e.touches[0].clientX,y:e.touches[0].clientY}:{x:e.clientX,y:e.clientY};}
+  canvas.addEventListener('mousedown',e=>{drag=true;const p=gxy(e);lX=p.x;lY=p.y;});
+  canvas.addEventListener('touchstart',e=>{drag=true;const p=gxy(e);lX=p.x;lY=p.y;e.preventDefault();},{passive:false});
+  window.addEventListener('mousemove',e=>{if(!drag)return;const p=gxy(e);vY+=(p.x-lX)*.006;vX+=(p.y-lY)*.004;lX=p.x;lY=p.y;});
+  window.addEventListener('touchmove',e=>{if(!drag)return;const p=gxy(e);vY+=(p.x-lX)*.006;vX+=(p.y-lY)*.004;lX=p.x;lY=p.y;e.preventDefault();},{passive:false});
+  window.addEventListener('mouseup',()=>drag=false);window.addEventListener('touchend',()=>drag=false);
 }
-
 startCanvas();
 </script>
 </body>
